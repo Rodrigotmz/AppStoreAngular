@@ -2,8 +2,8 @@ export interface LoginResponse{
     messaage: string;
     user:{
         id: number;
-        firstname: string;
-        lastname: string;
+        firstName: string;
+        lastName: string;
         email: string;
     };
 }

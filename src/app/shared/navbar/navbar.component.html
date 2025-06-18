@@ -1,0 +1,25 @@
+<mat-toolbar color="primary" *ngIf="isLoggedIn()">
+    <span>EDTeam Store</span>
+
+    <button mat-button routerLink="/home" class="ms-3">
+        Inicio
+    </button>
+
+
+    <button mat-button routerLink="/product/catalog" class="ms-3">
+        Catalogo de productos
+    </button>
+
+
+    <span class="spacer"></span>
+
+    <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <mat-menu #userMenu>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Cerrar sesión
+        </button>
+    </mat-menu>
+</mat-toolbar>

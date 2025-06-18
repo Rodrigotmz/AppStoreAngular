@@ -1,27 +1,30 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { SignUpRequest } from '../../interfaces/signup-request.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginRequest } from '../../interfaces/login-request.interface';
+import { SignUpService } from '../../services/sign-up.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.css'
 })
-export class LoginComponent {
+export class SignupComponent {
   form: FormGroup;
+  passwordVisible = false;
 
   constructor(
-    private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private signUpService: SignUpService
   ) {
     this.form = this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
@@ -29,20 +32,21 @@ export class LoginComponent {
     return this.form.controls[control].hasError(error);
   }
 
-  login(): void {
+  signup() {
     if (this.form.invalid) {
       return;
     }
-    const credentials: LoginRequest = this.form.value;
 
-    this.authService.login(credentials).subscribe({
+    const signUpData: SignUpRequest = this.form.value as SignUpRequest;
+
+    this.signUpService.signUp(signUpData).subscribe({
       next: () => {
-        this.showSnackBar('Inicio de sesión exitoso');
+        this.showSnackBar('Registro exitoso');
         this.router.navigate(['home']);
       },
       error: () => {
-        this.showSnackBar('Error en el inicio de sesión. Por favor, intenta de nuevo.');
-      },
+        this.showSnackBar('Error en el registro. Por favor, intenta de nuevo.');
+      }
     });
   }
 
