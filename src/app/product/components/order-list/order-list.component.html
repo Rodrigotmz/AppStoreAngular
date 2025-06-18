@@ -1,0 +1,38 @@
+<div class="container">
+    <h1 class="fw-bold text-center">Lista de Pedidos</h1>
+
+    <div class="top-bar">
+        <!-- Botón para ver el catálogo -->
+        <button mat-raised-button color="primary" class="view-catalog-button" routerLink="/product/catalog">
+            Ver Catálogo
+        </button>
+    </div>
+
+    @if(orders.length > 0){
+    <div class="order-grid">
+
+        @for (order of orders; track $index) {
+        <div class="order-card">
+            <div class="order-info">
+                <p><strong>Fecha:</strong> {{ order.date }}</p>
+            </div>
+            <div class="cart-items">
+                <h4>Ítems del Carrito:</h4>
+                <ul>
+                    <li *ngFor="let item of order.cartItems">
+                        <p>{{ item.productName }} - Cantidad: {{ item.quantity }}</p>
+                    </li>
+                </ul>
+            </div>
+            @if(order.total){
+            <div>
+                <p><strong>Total:</strong> {{ order.total | currency:'USD':'symbol':'1.2-2' }}</p>
+            </div>
+            }
+        </div>
+        }
+    </div>
+    }@else {
+    <p class="text-center">No hay pedidos disponibles.</p>
+    }
+</div>

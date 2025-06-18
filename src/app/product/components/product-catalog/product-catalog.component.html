@@ -1,0 +1,51 @@
+<div class="container">
+  
+    <div class="top-bar">
+      <div class="cart-badge">
+        <button mat-icon-button [matBadge]="countInCart" routerLink="/product/cart" matBadgeColor="warn" matBadgePosition="above after">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
+  
+      
+      <button mat-button color="primary" class="view-orders-button" routerLink="/product/order-list">
+        Ver Mis Pedidos
+      </button>
+    </div>
+  
+    <!-- Filtro por Categoría -->
+    <div class="category-filter">
+      <mat-form-field appearance="fill">
+        <mat-label>Filtrar por Categoría</mat-label>
+        <mat-select [(value)]="selectedCategory" (selectionChange)="filterByCategory()">
+          <mat-option [value]="null">Todas las Categorías</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div class="card-container">
+  
+      @for (product of filteredProducts; track $index) {
+        <div class="product-card">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title>{{ product.name }}</mat-card-title>            
+            </mat-card-header>
+            <img mat-card-image [src]="product.image" alt="Imagen de {{ product.name }}">
+            <mat-card-content>
+              <p>{{ product.description }}</p> 
+              <p>Precio: {{ product.price | currency:'USD':'symbol':'1.2-2' }}</p> 
+            </mat-card-content>
+            <mat-card-actions class="card-actions">
+              <button mat-raised-button color="primary" (click)="addToCart(product)">Añadir al Carrito</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }@empty {
+        <p>No hay productos disponibles.</p>
+      }
+    </div>
+    
+  </div>
+  
